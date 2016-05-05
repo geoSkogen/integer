@@ -1,0 +1,46 @@
+body {
+  font-family: Helvetica, sans-serif;
+  font-weight: bold;
+}
+
+input {
+  width: 3em;
+  text-align: center;
+  opacity: 0.75;
+  border: 1px solid cornflowerblue;
+  margin: 0.5em;
+}
+
+input.fraction {
+  padding: 0.5em 0.5em 0.5em 1em;
+}
+
+input.responseBox {
+  padding: 0.5em 0.2em 0.5em 0.2em;
+}
+
+button {
+  background-color: blue;
+  color: white;
+  opacity: 0.75;
+  margin: 0.5em;
+  border: none;
+  padding: 0.5em;
+}
+
+p {
+  line-height: 40%;
+
+}
+
+p.big {
+  font-size: 24px;
+}
+
+section {
+ width: 15%;
+ text-align: center;
+ border: 1px solid cornflowerblue;
+ border-radius: 2px;
+ margin: 0.5em;
+}
