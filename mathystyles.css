@@ -44,3 +44,16 @@ section {
  border-radius: 2px;
  margin: 0.5em;
 }
+
+section.flexOuter {
+  flex-flow: column wrap;
+  justify-content: space-between;
+}
+
+article.flexInner {
+  flex: 1 1 16%;
+}
+
+div.floatdiv {
+  float: left;
+}
