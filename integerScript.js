@@ -4,6 +4,7 @@ function initFuncs() {
   var ps = document.getElementsByTagName('p');
   var ins = document.getElementsByTagName('input');
   var buts = document.getElementsByTagName('button');
+  var spans = document.getElementsByTagName('span');
   var signsArr = [ "+", "-", "/", "x"];
   var result;
   var falseCount = 0;
@@ -26,6 +27,10 @@ function initFuncs() {
       if (ins[i].value == "" || ins[i].value == " ") {
         ps[alert].innerHTML = "enter a value";
         invalid = 1;
+        if (ins[3] != "" && ins[3] != " " && topResult == 0 &&
+            bottomResult == 0) {
+              invalid = 0;
+            }
       } else if (isNaN(ins[i].value)) {
         ps[alert].innerHTML = "enter a number";
         invalid = 1;
@@ -98,6 +103,7 @@ function initFuncs() {
     if (valIn != result) {
       ps[1].innerHTML = "false";
       falseCount += 1;
+      spans[0].innerHTML = result;      
     }
   }
   function getFraction() {
