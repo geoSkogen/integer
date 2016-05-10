@@ -17,7 +17,7 @@ function initFuncs() {
   buts[2].onclick = function () { validateInput(3, 6, 12); };
 
   ins[0].addEventListener("keypress", function () {
-      if (event.keyCode === 13) { validateinput(0, 1, 1); } });
+      if (event.keyCode === 13) { validateInput(0, 1, 1); } });
   getRandoms();
   getFraction();
 
@@ -102,14 +102,16 @@ function initFuncs() {
     ps[1].innerHTML = "true";
     if (valIn != result) {
       ps[1].innerHTML = "false";
+      spans[0].innerHTML = result;
       falseCount += 1;
-      spans[0].innerHTML = result;      
+      spans[0].innerHTML = result;
     }
   }
   function getFraction() {
     var factor = Math.ceil(Math.random()*10);
     var top = Math.ceil(Math.random()*10) * factor;
     var bot = Math.ceil(Math.random()*10) * factor;
+    if (top == bot) { getFraction() };
     if (top <= bot) {
       fracReducer(top,bot);
       ps[2].innerHTML = top;
@@ -136,9 +138,15 @@ function initFuncs() {
   function validateReducer(numerIn, denomIn) {
     if (numerIn == topResult && denomIn == bottomResult) {
       ps[6].innerHTML = "true";
+      for (var i = 1; i < 4; i++) {
+        spans[i].innerHTML = "&nbsp;";
+      }
     } else {
       ps[6].innerHTML = "false";
-      falsecount++;
+      falseCount++;
+      spans[1].innerHTML = topResult;
+      spans[2].innerHTML = "&mdash;";
+      spans[3].innerHTML = bottomResult;
     }
   }
 
@@ -157,9 +165,16 @@ function initFuncs() {
   function validateMixed(int, numer, denom) {
    if (int == integerResult && numer == topResult && denom == bottomResult) {
      ps[12].innerHTML = "true";
+     for (var i = 4; i < 8; i++) {
+       spans[i].innerHTML = "&nbsp;";
+     }
    } else {
     ps[12].innerHTML = "false";
     falseCount++;
+    spans[4].innerHTML = integerResult;
+    spans[5].innerHTML = topResult;
+    spans[6].innerHTML = "&mdash;";
+    spans[7].innerHTML = bottomResult;
    }
   }
 }
