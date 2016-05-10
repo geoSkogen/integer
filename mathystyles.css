@@ -51,7 +51,12 @@ section.flexOuter {
 }
 
 article.flexInner {
-  flex: 1 1 16%;
+/*  flex: 1 1 16%;*/
+    border: 1px solid red;
+}
+
+article#wtf {
+
 }
 
 div.floatdiv {
