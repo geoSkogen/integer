@@ -1,4 +1,5 @@
 body {
+  background-color: white;
   font-family: Helvetica, sans-serif;
   font-weight: bold;
 }
@@ -13,6 +14,7 @@ input {
 
 input.fraction {
   padding: 0.5em 0.5em 0.5em 1em;
+  margin: 0;
 }
 
 input.responseBox {
@@ -23,7 +25,7 @@ button {
   background-color: blue;
   color: white;
   opacity: 0.75;
-  margin: 0.5em;
+  margin: 1.5em 0.5em 0.5em 0.5em;
   border: none;
   padding: 0.5em;
 }
@@ -38,28 +40,52 @@ p.big {
 }
 
 section {
- width: 15%;
- text-align: center;
- border: 1px solid cornflowerblue;
- border-radius: 2px;
- margin: 0.5em;
+  background-color: white;
+  text-align: center;
+  padding: 0.5em;
+  border: 1px solid cornflowerblue;
+  border-radius: 2px;
+  margin: 0.5em;
 }
 
 section.flexOuter {
-  flex-flow: column wrap;
+  border: 1px solid gainsboro;
+  display: flex;
+  flex-flow: row wrap;
   justify-content: space-between;
 }
 
-article.flexInner {
-/*  flex: 1 1 16%;*/
-    border: 1px solid red;
-    
+section.flexInner {
+  flex: 1 1 16%;
 }
 
-article#wtf {
-
+article {
+  background-color: white;
+  text-align: center;
+  padding: 0.75em 0.5em 0.5em 0.5em;
+  border: 1px solid cornflowerblue;
+  border-radius: 2px;
+  margin: 0.5em;
 }
 
+article.flexFracOuter {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  flex: 1 1 16%;
+  margin: 0.5em;
+}
+
+article#invisibleFlexFracOuter {
+  border: none;
+}
+
+article.flexFracInner {
+  flex: 1 1 16%;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
 div.floatdiv {
   float: left;
 }
