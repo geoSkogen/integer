@@ -1,18 +1,25 @@
 body {
+  background-color: cadetblue;
   font-family: Helvetica, sans-serif;
   font-weight: bold;
+}
+
+h4 {
+  color: white;
+  margin: 0;
 }
 
 input {
   width: 3em;
   text-align: center;
   opacity: 0.75;
-  border: 1px solid cornflowerblue;
+  border: 1px solid gainsboro;
   margin: 0.5em;
 }
 
 input.fraction {
   padding: 0.5em 0.5em 0.5em 1em;
+  margin: 0;
 }
 
 input.responseBox {
@@ -20,40 +27,78 @@ input.responseBox {
 }
 
 button {
-  background-color: blue;
+  background-color: cadetblue;
   color: white;
-  opacity: 0.75;
-  margin: 0.5em;
+  /*opacity: 0.75;*/
+  margin: 1.5em 0.5em 0.5em 0.5em;
   border: none;
   padding: 0.5em;
 }
 
 p {
   line-height: 40%;
-
+  opacity: 0.6;
 }
 
 p.big {
   font-size: 24px;
 }
 
+span {
+  opacity: 0.6;
+}
+
 section {
- width: 15%;
- text-align: center;
- border: 1px solid cornflowerblue;
- border-radius: 2px;
- margin: 0.5em;
+  background-color: white;
+  font-size: 16px;
+  text-align: center;
+  padding: 0.5em;
+  border: 1px solid gainsboro;
+  border-radius: 2px;
+  margin: 0.5em;
 }
 
 section.flexOuter {
-  flex-flow: column wrap;
+  background-color: whitesmoke;
+  border: 2px solid gainsboro;
+  border-radius: 4px;
+  display: flex;
+  flex-flow: row wrap;
   justify-content: space-between;
 }
 
-article.flexInner {
+section.flexInner {
   flex: 1 1 16%;
 }
 
+article {
+  background-color: white;
+  font-size: 16px;
+  text-align: center;
+  padding: 0.75em 0.5em 0.5em 0.5em;
+  border: 1px solid gainsboro;
+  border-radius: 2px;
+  margin: 0.5em;
+}
+
+article.flexFracOuter {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  flex: 1 1 16%;
+  margin: 0.5em;
+}
+
+article#invisibleFlexFracOuter {
+  border: none;
+}
+
+article.flexFracInner {
+  flex: 1 1 16%;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
 div.floatdiv {
   float: left;
 }
