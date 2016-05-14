@@ -1,180 +1,339 @@
 window.onload = initFuncs;
 
 function initFuncs() {
-  var ps = document.getElementsByTagName('p');
-  var ins = document.getElementsByTagName('input');
-  var buts = document.getElementsByTagName('button');
-  var spans = document.getElementsByTagName('span');
-  var signsArr = [ "+", "-", "/", "x"];
-  var result;
+// all the DOM variables
+  var displayArr = [
+                    document.getElementsByClassName("express"),//0
+                    document.getElementsByClassName("fractop"),//1
+                    document.getElementsByClassName("fracbot"),//2
+                    document.getElementsByClassName("mixtop"),//3
+                    document.getElementsByClassName("mixbot")//4
+                    ];
+  var simpleBools = document.getElementsByClassName("answerBool");
+  var fracBools = document.getElementsByClassName("fracBool");
+  var mixBools = document.getElementsByClassName("mixBool");
+  var alertFields = [];
+  var simpcount = 0;
+  var fraccount = 0;
+  var mixcount = 0;
+
+  var simpleAns = document.getElementsByClassName("showAnswer");
+  var fracAnsTops = document.getElementsByClassName("fracAnswerTop");
+  var fracAnsBots = document.getElementsByClassName("fracAnswerBot");
+  var mixAnsInts = document.getElementsByClassName("mixAnswerInt");
+  var mixAnsTops = document.getElementsByClassName("mixAnswerTop");
+  var mixAnsBots = document.getElementsByClassName("mixAnswerBot");
+  var bigs = document.getElementsByClassName("big");
+  var bigIndex;
+  var fracEmdash = [];
+  var mixEmdash = [];
+  var k = 0;
+
+  var allInputs = document.getElementsByTagName("input");
+  var simpleIns = document.getElementsByClassName("responseBox");
+  var ins = document.getElementsByClassName("fraction");
+  var priorInputs = displayArr[1].length + displayArr[2].length;
+  var fracTopIns = [];
+  var fracBotIns = [];
+  var mixIntIns = [];
+  var mixTopIns = [];
+  var mixBotIns = [];
+  var validateIns = [];
+
+  var buts = document.getElementsByTagName("button");
+  var j = 0;
+  var l = 0;
+  var simpleGos = [];
+  var fracGos = [];
+  var mixGos = [];
+
+// data processing varaibles
+  var signsArr = [ "+", "-", "&divide;", "x"];
   var falseCount = 0;
-  var topResult;
-  var bottomResult;
-  var integerResult;
+  var simpleResults = [];
+  var fracTopResults = [];
+  var fracBotResults = [];
+  var mixIntResults = [];
+  var mixTopResults = [];
+  var mixBotResults = [];
 
-  buts[0].onclick = function () { validateInput(0, 1, 1); };
-  buts[1].onclick = function () { validateInput(1, 3, 6); };
-  buts[2].onclick = function () { validateInput(3, 6, 12); };
-
-  ins[0].addEventListener("keypress", function () {
-      if (event.keyCode === 13) { validateInput(0, 1, 1); } });
-  getRandoms();
-  getFraction();
-
-  function validateInput(start, finish, alert) {
-    var invalid = 0;
-    for (var i = start; i < finish; i++) {
-      if (ins[i].value == "" || ins[i].value == " ") {
-        ps[alert].innerHTML = "enter a value";
-        invalid = 1;
-        if (ins[3] != "" && ins[3] != " " && topResult == 0 &&
-            bottomResult == 0) {
-              invalid = 0;
-            }
-      } else if (isNaN(ins[i].value)) {
-        ps[alert].innerHTML = "enter a number";
-        invalid = 1;
+// organizing the buttons and inputs
+//breaks up inputs per function
+  for (var i = 0; i < displayArr[1].length; i++) {
+    fracTopIns[i] = ins[i*2];
+    fracBotIns[i] = ins[(i*2)+1];
+  }
+  for (var i = 0; i < displayArr[3].length; i++) {
+    mixIntIns[i] = ins[(i*3)+priorInputs];
+    mixTopIns[i] = ins[(i*3)+priorInputs+1];
+    mixBotIns[i] = ins[(i*3)+priorInputs+2];
+  }
+// breaks up buttons per function
+  for (var i = 0; i < displayArr[0].length; i++) {
+    simpleGos[i] = buts[i];
+  }
+  for (var i = displayArr[0].length;
+    i < (displayArr[0].length + displayArr[1].length); i++) {
+    fracGos[j] = buts[i];
+    j++;
+  }
+  for (var i = displayArr[0].length + displayArr[1].length;
+    i < (displayArr[0].length + displayArr[1].length +
+    displayArr[3].length); i++) {
+    mixGos[l] = buts[i];
+    l++;
+  }
+// grabs elements for fraction answer display
+  for (var i = 0; i < bigs.length/3; i++) {
+    bigIndex = i + ( (i*2) + 1 );
+      if (bigIndex > (displayArr[1].length * 3) ) {
+        mixEmdash[k] = bigs[bigIndex];
+        k++;
+      } else {
+        fracEmdash[i] = bigs[bigIndex];
       }
-    }
-    if (invalid != 1) {
-      switch(alert) {
-        case 1:
-          compareValues(ins[start].value);
-          break
-        case 6:
-          validateReducer(ins[start].value, ins[start+1].value);
-          break;
-        case 12:
-          validateMixed(ins[start].value, ins[start+1].value, ins[start+2].value);
-          break;
-        default:
-          ps[12].innerHTML = "momsbooboobathroomcookies";
+  }
+// creates a document-spanning array one text elements per math problem
+// for form validation dialog boxes
+  for (var i = 0; i < simpleBools.length +
+   fracBools.length + mixBools.length; i++ ) {
+     if (i >= (simpleBools.length + fracBools.length)) {
+       alertFields[i] = mixBools[mixcount];
+       mixcount++;
+     } else if (i >= simpleBools.length) {
+       alertFields[i] = fracBools[fraccount];
+       fraccount++;
+     } else {
+       alertFields[i] = simpleBools[simpcount];
+       simpcount++;
+     }
+    alertFields[i].style.fontSize = "12px";
+  }
+// assigns functions to simple problem buttons
+  for (var i = 0; i < simpleGos.length; i++) {
+    var simpButton = simpleGos[i];
+    simpleAssigner(simpButton, i);
+  }
+
+  function simpleAssigner(thisButton, boxNo) {
+    var type = "simp";
+    thisButton.onclick = function () {
+    validateIns = [];
+    validateIns[0] = simpleIns[boxNo];
+    validateInput(boxNo, type, boxNo)
+    };
+  }
+// assigns functions to fraction reducer buttons
+  for (var i = 0; i < fracGos.length; i++) {
+    var fracButton = fracGos[i];
+    fracAssigner(fracButton, i);
+  }
+
+  function fracAssigner(thisButton, boxNo) {
+    var type = "frac";
+    var intercept = displayArr[0].length + boxNo;
+    thisButton.onclick = function () {
+      validateIns = [];
+      validateIns[0] = fracTopIns[boxNo];
+      validateIns[1] = fracBotIns[boxNo];
+      validateInput(boxNo, type, intercept)
+    };
+  }
+// assigns functions to mixed number converter buttons
+  for (var i = 0; i < mixGos.length; i++) {
+    var mixButton = mixGos[i];
+    mixAssigner(mixButton, i);
+  }
+
+function mixAssigner(thisButton, boxNo) {
+    var type = "mix";
+    var intercept = displayArr[0].length + displayArr[1].length + boxNo;
+    thisButton.onclick = function () {
+      validateIns = [];
+      validateIns[0] = mixIntIns[boxNo];
+      validateIns[1] = mixTopIns[boxNo];
+      validateIns[2] = mixBotIns[boxNo];
+      validateInput(boxNo, type, intercept)
+    };
+  }
+
+  for (var i = 0; i < displayArr[0].length; i++) {
+    getRandoms(i);
+  }
+  for (var k = 0; k < displayArr[1].length; k++) {
+    getFractions(k);
+  }
+  for (var j = 0; j < displayArr[3].length; j++) {
+    getImpropers(j);
+  }
+
+  function validateInput(boxNo, type, alertNo) {
+     var invalid = 0;
+     for (var i = 0; i < validateIns.length; i++) {
+       if (validateIns[i].value == "" || validateIns[i].value == " ") {
+         alertFields[alertNo].innerHTML = "enter a value";
+         invalid = 1;
+         if (type == "mix") {
+            if (mixIntIns[boxNo].value != "" && mixIntIns[boxNo].value != " " &&
+                mixTopResults[boxNo] == "" && mixBotResults[boxNo] == "") {
+                  invalid = 0;
+            }
+         }
+       } else if (isNaN(validateIns[i].value)) {
+         alertFields[alertNo].innerHTML = "enter a number";
+         invalid = 1;
+       }
+     }
+     if (invalid != 1) {
+       alertFields[alertNo].innerHTML = type;
+       switch(type) {
+         case "simp":
+           compareValues(validateIns[0].value, boxNo);
+           break
+         case "frac":
+           validateReducer(validateIns[0].value, validateIns[1].value, boxNo);
+           break;
+         case "mix":
+           validateMixed(validateIns[0].value, validateIns[1].value,
+             validateIns[2].value, boxNo);
+           break;
+         default:
+           displayArr[0][boxNo].innerHTML = "[]";
       }
     }
   }
 
-  function getRandoms() {
-    var left = Math.ceil(Math.random()*10);
-    var right = Math.ceil(Math.random()*11);
+  function compareValues(valueIn, boxNo) {
+    simpleBools[boxNo].innerHTML = "true";
+    if (valueIn != simpleResults[boxNo]) {
+      simpleBools[boxNo].innerHTML = "false";
+      simpleAns[boxNo].innerHTML = simpleResults[boxNo];
+    }
+  }
+
+  function validateReducer(num, denom, boxNo) {
+    fracBools[boxNo].innerHTML = "true";
+    if (num != fracTopResults[boxNo] || denom != fracBotResults[boxNo]) {
+      fracBools[boxNo].innerHTML = "false";
+      fracAnsTops[boxNo].innerHTML = fracTopResults[boxNo];
+      fracEmdash[boxNo].innerHTML = "&mdash;";
+      fracAnsBots[boxNo].innerHTML = fracBotResults[boxNo];
+    }
+  }
+
+  function validateMixed(whole, num, denom, boxNo) {
+    mixBools[boxNo].innerHTML = "true";
+    if (whole != mixIntResults[boxNo] || num != mixTopResults[boxNo] ||
+      denom != mixBotResults[boxNo]) {
+        mixBools[boxNo].innerHTML = "false";
+        mixAnsInts[boxNo].innerHTML = mixIntResults[boxNo];
+        mixAnsTops[boxNo].innerHTML = mixTopResults[boxNo];
+        mixEmdash[boxNo].innerHTML = (mixTopResults[boxNo] == "")?
+                                     "" : "&mdash;";
+        mixAnsBots[boxNo].innerHTML = mixBotResults[boxNo];
+      }
+  }
+
+  function getRandoms(boxNo) {
+    var left = Math.ceil(Math.random()*12);
+    var right = Math.ceil(Math.random()*12);
     var signIndex = Math.floor(Math.random()*4);
     switch(signIndex) {
       case 0:
-        addThem(left, right, signIndex);
+        addThem(left, right, boxNo);
         break;
       case 1:
-        subtractThem(left, right, signIndex);
+        subtractThem(left, right, boxNo);
         break;
       case 2:
-        divideThem(left, right, signIndex);
+        divideThem(left, right, boxNo);
         break;
       case 3:
-        multiplyThem(left, right, signIndex);
+        multiplyThem(left, right, boxNo);
         break;
       default:
-        ps[0].innerHTML = "momsbooboobathroomcookies";
+        displayArr[0][boxNo].innerHTML = "[]";
     }
-    displayExpression(left, right, signIndex);
+    displayExpression(left, right, signIndex, boxNo);
+
+  }
+
+  function displayExpression(l, r, sign, box) {
+    displayArr[0][box].innerHTML = l + " " + signsArr[sign] + " " + r;
   }
 
   function addThem(l, r, n) {
-    result = l + r;
+    simpleResults[n] = l + r;
   }
 
   function subtractThem(l, r, n) {
-    result = l - r;
+    simpleResults[n] = l - r;
   }
 
   function multiplyThem(l, r, n) {
-    result = l * r;
+    simpleResults[n] = l * r;
   }
 
   function divideThem(l, r, n) {
-    result = Math.round(l/r);
+    simpleResults[n] = Math.round(l/r);
   }
 
-  function displayExpression(l, r, n) {
-    var left = l.toString();
-    var right = r.toString();
-    ps[0].innerHTML = left + " " + signsArr[n] + " " + right;
-  }
-
-  function compareValues(valIn) {
-    ps[1].innerHTML = "true";
-    if (valIn != result) {
-      ps[1].innerHTML = "false";
-      spans[0].innerHTML = result;
-      falseCount += 1;
-      spans[0].innerHTML = result;
-    }
-  }
-  function getFraction() {
+  function getFractions(boxNo) {
+    var pass = 0;
     var factor = Math.ceil(Math.random()*10);
     var top = Math.ceil(Math.random()*10) * factor;
     var bot = Math.ceil(Math.random()*10) * factor;
-    if (top == bot) { getFraction() };
-    if (top <= bot) {
-      fracReducer(top,bot);
-      ps[2].innerHTML = top;
-      ps[4].innerHTML = bot;
-    } else {
-      mixedNumber(top,bot);
-      ps[7].innerHTML = top;
-      ps[9].innerHTML = bot;
+    if (top == bot) { bot = bot*factor; }
+    if (top > bot) {
+      pass = top;
+      top = bot;
+      bot = pass;
     }
+    displayArr[1][boxNo].innerHTML = top;
+    displayArr[2][boxNo].innerHTML = bot;
+    fracReducer(top, bot, boxNo, 0);
   }
 
-  function fracReducer(top, bot) {
+  function fracReducer(top, bot, boxNo, improper) {
     var intArr = [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 ];
-    for (i = 0; i < intArr.length; i++) {
+    for (var i = 0; i < intArr.length; i++) {
       if (top % intArr[i] == 0 && bot % intArr[i] == 0) {
         top = top/intArr[i];
         bot = bot/intArr[i];
       }
     }
-    topResult = top;
-    bottomResult = bot;
-  }
-
-  function validateReducer(numerIn, denomIn) {
-    if (numerIn == topResult && denomIn == bottomResult) {
-      ps[6].innerHTML = "true";
-      for (var i = 1; i < 4; i++) {
-        spans[i].innerHTML = "&nbsp;";
-      }
+    if (improper == 0) {
+      fracTopResults[boxNo] = top;
+      fracBotResults[boxNo] = bot;
     } else {
-      ps[6].innerHTML = "false";
-      falseCount++;
-      spans[1].innerHTML = topResult;
-      spans[2].innerHTML = "&mdash;";
-      spans[3].innerHTML = bottomResult;
+      mixTopResults[boxNo] = top;
+      mixBotResults[boxNo] = bot;
     }
   }
 
-  function mixedNumber(top, bot) {
-    integerResult = Math.floor(top/bot);
+  function getImpropers(boxNo) {
+    var pass;
+    var factor = Math.ceil(Math.random()*10);
+    var top = Math.ceil(Math.random()*10) * factor;
+    var bot = Math.ceil(Math.random()*10) * factor;
+    if (top == bot) { top = top*factor; }
+    if (top < bot) {
+      pass = top;
+      top = bot;
+      bot = pass;
+    }
+    displayArr[3][boxNo].innerHTML = top;
+    displayArr[4][boxNo].innerHTML = bot;
+    mixIntResults[boxNo] = Math.floor(top/bot);
     if (top%bot == 0) {
-      topResult = "";
-      bottomResult = "";
+      mixTopResults[boxNo] = "";
+      mixBotResults[boxNo] = "";
+      mixAnsTops[boxNo].innerHTML = "";
+      mixAnsBots[boxNo].innerHTML = "";
     } else {
-      topResult = top%bot;
-      bottomResult = bot;
-      fracReducer(topResult, bottomResult);
+      top = top%bot;
+      fracReducer(top, bot, boxNo, 1);
     }
   }
 
-  function validateMixed(int, numer, denom) {
-   if (int == integerResult && numer == topResult && denom == bottomResult) {
-     ps[12].innerHTML = "true";
-     for (var i = 4; i < 8; i++) {
-       spans[i].innerHTML = "&nbsp;";
-     }
-   } else {
-    ps[12].innerHTML = "false";
-    falseCount++;
-    spans[4].innerHTML = integerResult;
-    spans[5].innerHTML = topResult;
-    spans[6].innerHTML = "&mdash;";
-    spans[7].innerHTML = bottomResult;
-   }
-  }
 }
