@@ -1,5 +1,5 @@
 # integer
---three basic modules for randomly generated math problems;
-display correct answers for incorrect responses
-ISSUE: correct answer fileds for third module pop out of
-their parent HTML element, . . . yeah, no idea.
+--three basic modules for three kinds of randomly generated math problems;
+modules display correct answers for incorrect responses.
+Script is completely portable.  Formatted HTML elements can be added or
+removed without script failure.  
