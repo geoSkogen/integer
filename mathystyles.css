@@ -4,9 +4,40 @@ body {
   font-weight: bold;
 }
 
+a:link {
+  text-decoration: none;
+  color: gainsboro;
+}
+
+a:hover {
+  text-decoration: none;
+  color: gainsboro;
+}
+
+a:visited {
+  text-decoration: none;
+  color: gainsboro;
+}
+
+a.linkage {
+  font-size:16px;
+  padding: 0.5em;
+  border: 2px solid gainsboro;
+  border-radius: 2px;
+}
+
+a.linkage:hover {
+  color: black;
+  border: 2px solid black;
+}
+
+h2 {
+  margin: 1em 1.5em;
+}
+
 h4 {
   color: white;
-  margin: 0;
+  margin: 0 1.5em;
 }
 
 input {
