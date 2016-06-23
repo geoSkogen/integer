@@ -21,7 +21,8 @@ a:visited {
 
 a.linkage {
   font-size:16px;
-  padding: 0.5em;
+  padding: 0.5em 0.5em 0.5em 0.5em;
+  margin: 1em 1em 1em 1em;
   border: 2px solid gainsboro;
   border-radius: 2px;
 }
@@ -31,8 +32,20 @@ a.linkage:hover {
   border: 2px solid black;
 }
 
+#smaller {
+  font-size:10px;
+}
+
 h2 {
-  margin: 1em 1.5em;
+  margin: 1em 1em;
+  display: flex;
+  flex-flow: row-wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+div.title {
+  margin: 1em;
 }
 
 h4 {
