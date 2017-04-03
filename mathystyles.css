@@ -61,7 +61,12 @@ input {
   margin: 0.5em;
 }
 
-input.fraction {
+.fraction,
+.fracInTop,
+.fracInBot,
+.mixInInt,
+.mixInTop,
+.misInBot {
   padding: 0.5em 0.5em 0.5em 1em;
   margin: 0;
 }
@@ -145,4 +150,10 @@ article.flexFracInner {
 }
 div.floatdiv {
   float: left;
+}
+
+.fracBool,
+.mixBool,
+.answerBool {
+  font-size: 12px;
 }
