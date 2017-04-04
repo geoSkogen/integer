@@ -1,9 +1,7 @@
 # integer
-Math Refresher&mdash;creates three kinds of
-randomly generated arithmetic problems
-validates user input, and displays correct answers
-for incorrect responses.
+## Math Refresher
+### creates three kinds of randomly generated arithmetic problems
+### validates user input & displays correct answersfor incorrect responses
 
-The JavaScript is largely decoupled from the HTML document;
-properly classed & clustered elements can be added,
-rearranged, & removed without script failure.   
+### JavaScript is largely decoupled from the HTML document&mdash;
+#### properly classed & clustered elements can be added, rearranged, & removed without script failure   
