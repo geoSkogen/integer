@@ -20,40 +20,43 @@
     <h2>
       <div class="title">math refresher</div>
       <a href="index.html" class="linkage">refresh</a>
+      <a href="https://github.com/geoSkogen/integer"
+        class="linkage" id="smaller">source</a>
       <a href="http://geoskogen.github.io/joseph_scoggins/"
         class="linkage" id="smaller">geoSkogen</a>
     </h2>
   </header>
   <h4>add, subtract, multiply, or divide</h4>
+  <h3 id="debugger"></h3>
 <!--this is the random arithmetic problem section-->
   <section class="flexOuter">
     <section class="flexInner">
       <p class="express">n : n</p>
-      <input type="text" class="responseBox"/><button>go</button>
+      <input type="text" class="responseBox"/><button class="simpleGo">go</button>
       <p class="answerBool">&nbsp;</p>
       <p class="showAnswer">&nbsp;</p>
      </section>
-    <section class="flexInner">
+     <section class="flexInner">
       <p class="express">n : n</p>
-      <input type="text" class="responseBox"/><button>go</button>
+      <input type="text" class="responseBox"/><button class="simpleGo">go</button>
       <p class="answerBool">&nbsp;</p>
       <p class="showAnswer">&nbsp;</p>
      </section>
      <section class="flexInner">
        <p class="express">n : n</p>
-       <input type="text" class="responseBox"/><button>go</button>
+       <input type="text" class="responseBox"/><button class="simpleGo">go</button>
        <p class="answerBool">&nbsp;</p>
        <p class="showAnswer">&nbsp;</p>
       </section>
      <section class="flexInner">
        <p class="express">n : n</p>
-       <input type="text" class="responseBox"/><button>go</button>
+       <input type="text" class="responseBox"/><button class="simpleGo">go</button>
        <p class="answerBool">&nbsp;</p>
        <p class="showAnswer">&nbsp;</p>
       </section>
       <section class="flexInner">
         <p class="express">n : n</p>
-        <input type="text" class="responseBox"/><button>go</button>
+        <input type="text" class="responseBox"/><button class="simpleGo">go</button>
         <p class="answerBool">&nbsp;</p>
         <p class="showAnswer">&nbsp;</p>
       </section>
@@ -70,14 +73,14 @@
         <br/>
         <br/>
         <span class="fracAnswerTop"></span><br/>
-        <span class="big"></span><br/>
+        <span class="fracEmdash"></span><br/>
         <span class="fracAnswerBot"></span><br/>
     </article>
       <article class="flexFracInner">
-        <input type="text" class="fraction"/>
+        <input type="text" class="fracInTop"/>
         <p class="big">&mdash;</p>
-        <input type="text" class="fraction"/></br>
-        <button>go</button>
+        <input type="text" class="fracInBot"/></br>
+        <button class="fracGo">go</button>
         <p class="fracBool">&nbsp;</p>
       </article>
     </article>
@@ -90,14 +93,14 @@
         <br/>
         <br/>
         <span class="fracAnswerTop"></span><br/>
-        <span class="big"></span><br/>
+        <span class="fracEmdash"></span><br/>
         <span class="fracAnswerBot"></span><br/>
     </article>
       <article class="flexFracInner">
-        <input type="text" class="fraction"/>
+        <input type="text" class="fracInTop"/>
         <p class="big">&mdash;</p>
-        <input type="text" class="fraction"/></br>
-        <button>go</button>
+        <input type="text" class="fracInBot"/></br>
+        <button class="fracGo">go</button>
         <p class="fracBool">&nbsp;</p>
       </article>
     </article>
@@ -110,14 +113,14 @@
         <br/>
         <br/>
         <span class="fracAnswerTop"></span><br/>
-        <span class="big"></span><br/>
+        <span class="fracEmdash"></span><br/>
         <span class="fracAnswerBot"></span><br/>
     </article>
       <article class="flexFracInner">
-        <input type="text" class="fraction"/>
+        <input type="text" class="fracInTop"/>
         <p class="big">&mdash;</p>
-        <input type="text" class="fraction"/></br>
-        <button>go</button>
+        <input type="text" class="fracInBot"/></br>
+        <button class="fracGo">go</button>
         <p class="fracBool">&nbsp;</p>
       </article>
     </article>
@@ -130,14 +133,14 @@
         <br/>
         <br/>
         <span class="fracAnswerTop"></span><br/>
-        <span class="big"></span><br/>
+        <span class="fracEmdash"></span><br/>
         <span class="fracAnswerBot"></span><br/>
     </article>
       <article class="flexFracInner">
-        <input type="text" class="fraction"/>
+        <input type="text" class="fracInTop"/>
         <p class="big">&mdash;</p>
-        <input type="text" class="fraction"/></br>
-        <button>go</button>
+        <input type="text" class="fracInBot"/></br>
+        <button class="fracGo">go</button>
         <p class="fracBool">&nbsp;</p>
       </article>
     </article>
@@ -150,14 +153,14 @@
         <br/>
         <br/>
         <span class="fracAnswerTop"></span><br/>
-        <span class="big"></span><br/>
+        <span class="fracEmdash"></span><br/>
         <span class="fracAnswerBot"></span><br/>
     </article>
       <article class="flexFracInner">
         <input type="text" class="fraction"/>
         <p class="big">&mdash;</p>
         <input type="text" class="fraction"/></br>
-        <button>go</button>
+        <button class="fracGo">go</button>
         <p class="fracBool">&nbsp;</p>
       </article>
     </article>
@@ -179,7 +182,7 @@
           </article>
           <article class="flexFracInner">
             <span class="mixAnswerTop"></span><br/>
-            <span class="big"></span><br/>
+            <span class="mixEmdash"></span><br/>
             <span class="mixAnswerBot"></span><br/>
           </article>
         </article>
@@ -188,14 +191,14 @@
         <br/>
         <br/>
         <br/>
-        <input type="text" class="fraction"/><br/>
+        <input type="text" class="mixInInt"/><br/>
         <p><sub>whole number</sub></p>
       </article>
       <article class="flexFracInner">
-        <input type="text" class="fraction"/>
+        <input type="text" class="mixInTop"/>
         <p class="big">&mdash;</p>
-        <input type="text" class="fraction"/></br>
-        <button>go</button>
+        <input type="text" class="mixInBot"/></br>
+        <button class="mixGo">go</button>
         <p class="mixBool">&nbsp;</p>
       </article>
     </article>
@@ -213,7 +216,7 @@
           </article>
           <article class="flexFracInner">
             <span class="mixAnswerTop"></span><br/>
-            <span class="big"></span><br/>
+            <span class="mixEmdash"></span><br/>
             <span class="mixAnswerBot"></span><br/>
           </article>
         </article>
@@ -222,17 +225,17 @@
         <br/>
         <br/>
         <br/>
-        <input type="text" class="fraction"/><br/>
+        <input type="text" class="mixInInt"/><br/>
         <p><sub>whole number</sub></p>
       </article>
       <article class="flexFracInner">
-        <input type="text" class="fraction"/>
+        <input type="text" class="mixInTop"/>
         <p class="big">&mdash;</p>
-        <input type="text" class="fraction"/></br>
-        <button>go</button>
+        <input type="text" class="mixInBot"/></br>
+        <button class="mixGo">go</button>
         <p class="mixBool">&nbsp;</p>
       </article>
-    </article>
+    </article>-->
     <article class="flexFracOuter">
       <article class="flexFracInner">
         <p class="mixtop">n</p>
@@ -247,7 +250,7 @@
           </article>
           <article class="flexFracInner">
             <span class="mixAnswerTop"></span><br/>
-            <span class="big"></span><br/>
+            <span class="mixEmdash"></span><br/>
             <span class="mixAnswerBot"></span><br/>
           </article>
         </article>
@@ -256,14 +259,14 @@
         <br/>
         <br/>
         <br/>
-        <input type="text" class="fraction"/><br/>
+        <input type="text" class="mixInInt"/><br/>
         <p><sub>whole number</sub></p>
       </article>
       <article class="flexFracInner">
-        <input type="text" class="fraction"/>
+        <input type="text" class="mixInTop"/>
         <p class="big">&mdash;</p>
-        <input type="text" class="fraction"/></br>
-        <button>go</button>
+        <input type="text" class="mixInBot"/></br>
+        <button class="mixGo">go</button>
         <p class="mixBool">&nbsp;</p>
       </article>
     </article>
@@ -272,6 +275,8 @@
     <h2>
       <div class="title">math refresher</div>
       <a href="index.html" class="linkage">refresh</a>
+      <a href="https://github.com/geoSkogen/integer"
+        class="linkage" id="smaller">source</a>
       <a href="http://geoskogen.github.io/joseph_scoggins/"
          class="linkage" id="smaller">geoSkogen</a>
     </h2>

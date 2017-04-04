@@ -1,53 +1,19 @@
-window.onload = initFuncs;
+//the intention of this design is to completely decouple the script from the html;
+//not only can pages conatain any number of specified components
+//in any combination and/or order, now there is no longer any requirement that all types of
+//component be present; as long as the children are properly classed and
+//clustered, there is no limit to how the html document can be rearranged; it will
+//not break the script
+
+//to me this looks like it's ready to translate into angular
+
+window.addEventListener('load', initFuncs);
 
 function initFuncs() {
-// all the DOM variables
-  var displayArr = [
-                    document.getElementsByClassName("express"),//0
-                    document.getElementsByClassName("fractop"),//1
-                    document.getElementsByClassName("fracbot"),//2
-                    document.getElementsByClassName("mixtop"),//3
-                    document.getElementsByClassName("mixbot")//4
-                    ];
-  var simpleBools = document.getElementsByClassName("answerBool");
-  var fracBools = document.getElementsByClassName("fracBool");
-  var mixBools = document.getElementsByClassName("mixBool");
-  var alertFields = [];
-  var simpcount = 0;
-  var fraccount = 0;
-  var mixcount = 0;
-
-  var simpleAns = document.getElementsByClassName("showAnswer");
-  var fracAnsTops = document.getElementsByClassName("fracAnswerTop");
-  var fracAnsBots = document.getElementsByClassName("fracAnswerBot");
-  var mixAnsInts = document.getElementsByClassName("mixAnswerInt");
-  var mixAnsTops = document.getElementsByClassName("mixAnswerTop");
-  var mixAnsBots = document.getElementsByClassName("mixAnswerBot");
-  var bigs = document.getElementsByClassName("big");
-  var bigIndex;
-  var fracEmdash = [];
-  var mixEmdash = [];
-  var k = 0;
-
-  var allInputs = document.getElementsByTagName("input");
-  var simpleIns = document.getElementsByClassName("responseBox");
-  var ins = document.getElementsByClassName("fraction");
-  var priorInputs = displayArr[1].length + displayArr[2].length;
-  var fracTopIns = [];
-  var fracBotIns = [];
-  var mixIntIns = [];
-  var mixTopIns = [];
-  var mixBotIns = [];
-  var validateIns = [];
-
-  var buts = document.getElementsByTagName("button");
-  var j = 0;
-  var l = 0;
-  var simpleGos = [];
-  var fracGos = [];
-  var mixGos = [];
+  var debug = document.getElementById("debugger");
 
 // data processing varaibles
+  var validateIns = [];
   var signsArr = [ "+", "-", "&divide;", "x"];
   var falseCount = 0;
   var simpleResults = [];
@@ -57,121 +23,101 @@ function initFuncs() {
   var mixTopResults = [];
   var mixBotResults = [];
 
-// organizing the buttons and inputs
-//breaks up inputs per function
-  for (var i = 0; i < displayArr[1].length; i++) {
-    fracTopIns[i] = ins[i*2];
-    fracBotIns[i] = ins[(i*2)+1];
+// DOM variables
+
+//this folling suite checks the document for specified--hard-coded (at present)--classes
+//of elements, these will be where the randomnly generated math problems display;
+//if an element is present, it becomes part of an array--displayArray--which
+//is used to set up the view; all present elements are recorded in displayIndex
+
+  var alertFields = [];
+  var displayArr = [];
+  var displayClass = ["express", "fractop", "fracbot","mixtop", "mixbot"];
+  var displayIndex = [];
+  for (var i = 0; i < displayClass.length; i++) {
+    if (document.getElementsByClassName(displayClass[i])) {
+      displayArr.push(document.getElementsByClassName(displayClass[i]));
+      displayIndex.push(displayClass[i]);
+    }
   }
-  for (var i = 0; i < displayArr[3].length; i++) {
-    mixIntIns[i] = ins[(i*3)+priorInputs];
-    mixTopIns[i] = ins[(i*3)+priorInputs+1];
-    mixBotIns[i] = ins[(i*3)+priorInputs+2];
+//the components "scopes" have to be hard-coded like this:
+//check if the component is in the index, if so, start building its data structure,
+//then set up controls for input and output
+
+//note: so far there is no error-proofing for the improper clustering of otherwise
+//validly classed elements; the onus is on the author of the html to follow the guidlines;
+//there is a simple fix for this but I don't wont to do it right now
+
+  if (displayIndex.indexOf("express") != -1) {
+    var simpleBools = document.getElementsByClassName("answerBool");
+    var simpleAns = document.getElementsByClassName("showAnswer");
+    var simpleIns = document.getElementsByClassName("responseBox");
+    var simpleGos = document.getElementsByClassName("simpleGo");
+    var simpleAllIns = [simpleIns];
+    var expressIndex = displayIndex.indexOf("express");
+    for (var i = 0; i < displayArr[expressIndex].length; i++) {
+      getRandoms(i,expressIndex);
+    }
+    for (var i = 0; i < simpleGos.length; i++) {
+      assigner(simpleGos[i], i, "simp", simpleAllIns, simpleBools[i]);
+    }
   }
-// breaks up buttons per function
-  for (var i = 0; i < displayArr[0].length; i++) {
-    simpleGos[i] = buts[i];
+
+  if (displayIndex.indexOf("fractop") != -1 && displayIndex.indexOf("fracbot") != -1) {
+    var fracBools = document.getElementsByClassName("fracBool");
+    var fracAnsTops = document.getElementsByClassName("fracAnswerTop");
+    var fracAnsBots = document.getElementsByClassName("fracAnswerBot");
+    var fracGos = document.getElementsByClassName("fracGo");
+    var fracEmdash = document.getElementsByClassName("fracEmdash");
+    var fracTopIns = document.getElementsByClassName("fracInTop");
+    var fracBotIns = document.getElementsByClassName("fracInBot");
+    var fracAllIns = [fracTopIns, fracBotIns];
+    var fracTopIndex = displayIndex.indexOf("fractop");
+    var fracBotIndex = displayIndex.indexOf("fracbot");
+    for (var i = 0; i < displayArr[fracTopIndex].length; i++) {
+      getFractions(i, fracTopIndex, fracBotIndex);
+    }
+    for (var i = 0; i < fracGos.length; i++) {
+      assigner(fracGos[i], i, "frac", fracAllIns, fracBools[i]);
+    }
   }
-  for (var i = displayArr[0].length;
-    i < (displayArr[0].length + displayArr[1].length); i++) {
-    fracGos[j] = buts[i];
-    j++;
+
+  if (displayIndex.indexOf("mixtop") != -1 && displayIndex.indexOf("mixbot") != -1) {
+    var mixBools = document.getElementsByClassName("mixBool");
+    var mixAnsTops = document.getElementsByClassName("mixAnswerTop");
+    var mixAnsBots = document.getElementsByClassName("mixAnswerBot");
+    var mixGos = document.getElementsByClassName("mixGo");
+    var mixEmdash = document.getElementsByClassName("mixEmdash");
+    var mixIntIns = document.getElementsByClassName("mixInInt");
+    var mixTopIns = document.getElementsByClassName("mixInTop");
+    var mixBotIns = document.getElementsByClassName("mixInBot");
+    var mixAllIns = [mixIntIns, mixTopIns, mixBotIns];
+    var mixTopIndex = displayIndex.indexOf("mixtop");
+    var mixBotIndex = displayIndex.indexOf("mixbot");
+    for (var i = 0; i < displayArr[mixTopIndex].length; i++) {
+      getImpropers(i, mixTopIndex, mixBotIndex);
+    }
+    for (var i = 0; i < mixGos.length; i++) {
+      assigner(mixGos[i], i, "mix", mixAllIns, mixBools[i]);
+    }
   }
-  for (var i = displayArr[0].length + displayArr[1].length;
-    i < (displayArr[0].length + displayArr[1].length +
-    displayArr[3].length); i++) {
-    mixGos[l] = buts[i];
-    l++;
-  }
-// grabs elements for fraction answer display
-  for (var i = 0; i < bigs.length/3; i++) {
-    bigIndex = i + ( (i*2) + 1 );
-      if (bigIndex > (displayArr[1].length * 3) ) {
-        mixEmdash[k] = bigs[bigIndex];
-        k++;
-      } else {
-        fracEmdash[i] = bigs[bigIndex];
+
+  function assigner(thisButton, boxNo, string, inputArr, alertField) {
+    var type = string;
+    thisButton.onclick = function () {
+      validateIns = [];
+      for (var i = 0; i < inputArr.length; i++) {
+        validateIns[i] = inputArr[i][boxNo]
       }
-  }
-// creates a document-spanning array one text elements per math problem
-// for form validation dialog boxes
-  for (var i = 0; i < simpleBools.length +
-   fracBools.length + mixBools.length; i++ ) {
-     if (i >= (simpleBools.length + fracBools.length)) {
-       alertFields[i] = mixBools[mixcount];
-       mixcount++;
-     } else if (i >= simpleBools.length) {
-       alertFields[i] = fracBools[fraccount];
-       fraccount++;
-     } else {
-       alertFields[i] = simpleBools[simpcount];
-       simpcount++;
-     }
-    alertFields[i].style.fontSize = "12px";
-  }
-// assigns functions to simple problem buttons
-  for (var i = 0; i < simpleGos.length; i++) {
-    var simpButton = simpleGos[i];
-    simpleAssigner(simpButton, i);
-  }
-
-  function simpleAssigner(thisButton, boxNo) {
-    var type = "simp";
-    thisButton.onclick = function () {
-    validateIns = [];
-    validateIns[0] = simpleIns[boxNo];
-    validateInput(boxNo, type, boxNo)
-    };
-  }
-// assigns functions to fraction reducer buttons
-  for (var i = 0; i < fracGos.length; i++) {
-    var fracButton = fracGos[i];
-    fracAssigner(fracButton, i);
-  }
-
-  function fracAssigner(thisButton, boxNo) {
-    var type = "frac";
-    var intercept = displayArr[0].length + boxNo;
-    thisButton.onclick = function () {
-      validateIns = [];
-      validateIns[0] = fracTopIns[boxNo];
-      validateIns[1] = fracBotIns[boxNo];
-      validateInput(boxNo, type, intercept)
-    };
-  }
-// assigns functions to mixed number converter buttons
-  for (var i = 0; i < mixGos.length; i++) {
-    var mixButton = mixGos[i];
-    mixAssigner(mixButton, i);
-  }
-
-function mixAssigner(thisButton, boxNo) {
-    var type = "mix";
-    var intercept = displayArr[0].length + displayArr[1].length + boxNo;
-    thisButton.onclick = function () {
-      validateIns = [];
-      validateIns[0] = mixIntIns[boxNo];
-      validateIns[1] = mixTopIns[boxNo];
-      validateIns[2] = mixBotIns[boxNo];
-      validateInput(boxNo, type, intercept)
+      validateInput(boxNo, type, alertField);
     };
   }
 
-  for (var i = 0; i < displayArr[0].length; i++) {
-    getRandoms(i);
-  }
-  for (var k = 0; k < displayArr[1].length; k++) {
-    getFractions(k);
-  }
-  for (var j = 0; j < displayArr[3].length; j++) {
-    getImpropers(j);
-  }
-
-  function validateInput(boxNo, type, alertNo) {
+  function validateInput(boxNo, type, alertField) {
      var invalid = 0;
      for (var i = 0; i < validateIns.length; i++) {
        if (validateIns[i].value == "" || validateIns[i].value == " ") {
-         alertFields[alertNo].innerHTML = "enter a value";
+         alertField.innerHTML = "enter a value";
          invalid = 1;
          if (type == "mix") {
             if (mixIntIns[boxNo].value != "" && mixIntIns[boxNo].value != " " &&
@@ -180,12 +126,12 @@ function mixAssigner(thisButton, boxNo) {
             }
          }
        } else if (isNaN(validateIns[i].value)) {
-         alertFields[alertNo].innerHTML = "enter a number";
+         alertField.innerHTML = "enter a number";
          invalid = 1;
        }
      }
      if (invalid != 1) {
-       alertFields[alertNo].innerHTML = type;
+       alertField.innerHTML = type;
        switch(type) {
          case "simp":
            compareValues(validateIns[0].value, boxNo);
@@ -234,7 +180,7 @@ function mixAssigner(thisButton, boxNo) {
       }
   }
 
-  function getRandoms(boxNo) {
+  function getRandoms(boxNo, dispNo) {
     var left = Math.ceil(Math.random()*12);
     var right = Math.ceil(Math.random()*12);
     var signIndex = Math.floor(Math.random()*4);
@@ -252,14 +198,14 @@ function mixAssigner(thisButton, boxNo) {
         multiplyThem(left, right, boxNo);
         break;
       default:
-        displayArr[0][boxNo].innerHTML = "[]";
+        displayArr[dispNo][boxNo].innerHTML = "[]";
     }
-    displayExpression(left, right, signIndex, boxNo);
+    displayExpression(left, right, signIndex, boxNo, dispNo);
 
   }
 
-  function displayExpression(l, r, sign, box) {
-    displayArr[0][box].innerHTML = l + " " + signsArr[sign] + " " + r;
+  function displayExpression(l, r, sign, box, disp) {
+    displayArr[disp][box].innerHTML = l + " " + signsArr[sign] + " " + r;
   }
 
   function addThem(l, r, n) {
@@ -278,7 +224,7 @@ function mixAssigner(thisButton, boxNo) {
     simpleResults[n] = Math.round(l/r);
   }
 
-  function getFractions(boxNo) {
+  function getFractions(boxNo, topIndex, botIndex) {
     var pass = 0;
     var factor = Math.ceil(Math.random()*10);
     var top = Math.ceil(Math.random()*10) * factor;
@@ -289,8 +235,8 @@ function mixAssigner(thisButton, boxNo) {
       top = bot;
       bot = pass;
     }
-    displayArr[1][boxNo].innerHTML = top;
-    displayArr[2][boxNo].innerHTML = bot;
+    displayArr[topIndex][boxNo].innerHTML = top;
+    displayArr[botIndex][boxNo].innerHTML = bot;
     fracReducer(top, bot, boxNo, 0);
   }
 
@@ -311,7 +257,7 @@ function mixAssigner(thisButton, boxNo) {
     }
   }
 
-  function getImpropers(boxNo) {
+  function getImpropers(boxNo, topIndex, botIndex) {
     var pass;
     var factor = Math.ceil(Math.random()*10);
     var top = Math.ceil(Math.random()*10) * factor;
@@ -322,8 +268,8 @@ function mixAssigner(thisButton, boxNo) {
       top = bot;
       bot = pass;
     }
-    displayArr[3][boxNo].innerHTML = top;
-    displayArr[4][boxNo].innerHTML = bot;
+    displayArr[topIndex][boxNo].innerHTML = top;
+    displayArr[botIndex][boxNo].innerHTML = bot;
     mixIntResults[boxNo] = Math.floor(top/bot);
     if (top%bot == 0) {
       mixTopResults[boxNo] = "";
