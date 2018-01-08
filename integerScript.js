@@ -1,3 +1,5 @@
+
+
 //the intention of this design is to completely decouple the script from the html;
 //not only can pages conatain any number of specified components
 //in any combination and/or order, now there is no longer any requirement that all types of
@@ -25,7 +27,7 @@ function initFuncs() {
 
 // DOM variables
 
-//this folling suite checks the document for specified--hard-coded (at present)--classes
+//this following suite checks the document for specified--hard-coded (at present)--classes
 //of elements, these will be where the randomnly generated math problems display;
 //if an element is present, it becomes part of an array--displayArray--which
 //is used to set up the view; all present elements are recorded in displayIndex
@@ -41,11 +43,13 @@ function initFuncs() {
     }
   }
 //the components "scopes" have to be hard-coded like this:
-//check if the component is in the index, if so, start building its data structure,
-//then set up controls for input and output
+//The script will check if 'key' elements are in the index, if so,
+//it will start building an associated component's data structure, then set up
+//controls for input and output.
 
 //note: so far there is no error-proofing for the improper clustering of otherwise
-//validly classed elements; the onus is on the author of the html to follow the guidlines;
+//validly classed elements; those parts of the page will display but they just
+//won't work; the onus is on the author of the html to follow the guidlines;
 //there is a simple fix for this but I don't wont to do it right now
 
   if (displayIndex.indexOf("express") != -1) {
@@ -94,6 +98,8 @@ function initFuncs() {
     var mixAllIns = [mixIntIns, mixTopIns, mixBotIns];
     var mixTopIndex = displayIndex.indexOf("mixtop");
     var mixBotIndex = displayIndex.indexOf("mixbot");
+
+   //loading up the view with values; loading up the buttons with functions
     for (var i = 0; i < displayArr[mixTopIndex].length; i++) {
       getImpropers(i, mixTopIndex, mixBotIndex);
     }
@@ -112,6 +118,12 @@ function initFuncs() {
       validateInput(boxNo, type, alertField);
     };
   }
+
+  //this is the logic
+
+  //note: answers to division problems are sill being rounded to the nearest
+  //whole number.  I don't know why.  I'll fix it later, probably by adding logic
+  //to calculated the remainder and ask for it
 
   function validateInput(boxNo, type, alertField) {
      var invalid = 0;
